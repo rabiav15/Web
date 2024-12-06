@@ -1,0 +1,71 @@
+﻿@model SalonYonetimUygulamasi.Models.Salon
+
+@{
+	ViewData["Title"] = "Salon Detay Gösterme Sayfası";
+
+}
+
+
+<h2>SEÇİLEN SALONA AİT BİLGİLER AŞAĞIDADIR</h2>
+
+<hr/>
+
+<div>
+	<dl class="row">
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(Model => Model.SalonID)
+		</dt>
+		<dt class="col-sm-10">
+			@Html.DisplayFor(Model => Model.SalonID)
+		</dt>
+
+
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(Model=> Model.SalonAd)
+		</dt>
+		<dt class="col-sm-10">
+			@Html.DisplayFor(Model => Model.SalonAd)
+		</dt>
+
+
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(Model => Model.SalonAdres)
+		</dt>
+		<dt class="col-sm-10">
+			@Html.DisplayFor(Model => Model.SalonAdres)
+		</dt>
+
+
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(Model => Model.SalonTelefon)
+		</dt>
+		<dt class="col-sm-10">
+			@Html.DisplayFor(Model => Model.SalonTelefon)
+		</dt>
+	</dl>
+</div>
+<hr />
+
+@if (Model.Calisanlar.Count > 0)
+{
+	<table class="table table-stripped" width="70%">
+		<tr>
+			<th>Calısan Ad</th>
+		</tr>
+		@foreach (var Salon in Model.Calisanlar)
+		{
+			<tr>
+				<td>@Salon.CalisanAd</td>
+			</tr>
+		}
+
+	</table>
+}
+else
+{
+	<h3>Salona Aite Herhangi Bir Çalışan Yoktur</h3>
+}
+<div>
+	<a asp-action="Index"> Tüm Salonlar</a>
+</div>
+

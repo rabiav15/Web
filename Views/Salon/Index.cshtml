@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Salon>
+
+<h3 style="color:rebeccapurple"> @TempData["mesaj"]</h3>
+
+
+
+<p>
+	<a asp-action="SalonEkle">Salon Ekle</a>
+
+</p>
+
+<table class="table">
+	<thead>
+	
+
+		<th>
+			@Html.DisplayNameFor(Model=> Model.SalonAd)
+		</th>
+
+	<th>
+			@Html.DisplayNameFor(Model => Model.SalonAdres)
+	</th>
+
+	<th>
+			@Html.DisplayNameFor(Model => Model.SalonTelefon)
+	</th>
+
+	</thead>
+	@if (Model != null && Model.Any())
+	{
+	<tbody>
+
+		@foreach( var item in Model)
+		{
+			<tr>
+					
+				<td>
+					@Html.DisplayFor(modelItem=> item.SalonAd)
+				</td>
+
+				<td>
+					@Html.DisplayFor(modelItem => item.SalonAdres)
+				</td>
+
+				<td>
+					@Html.DisplayFor(modelItem => item.SalonTelefon)
+				</td>
+
+					
+				<td>
+					<a asp-action="SalonDuzenle"asp-route-id="@item.SalonID">Duzenle</a>
+
+				</td>
+				<td>
+					<a asp-action="SalonDetay" asp-route-id="@item.SalonID">Detay</a>
+
+				</td>
+				<td>
+					<a asp-action="SalonSil" asp-route-id="@item.SalonID">Sil</a>
+
+				</td>
+
+			</tr>
+		}
+	</tbody>
+	}
+
+</table>

@@ -6,10 +6,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+	
+
+
 var connStr = "Server=(localdb)\\mssqllocaldb;Database=SalonYonetimUygulamasi;Trusted_Connection=True;";
 
 builder.Services.AddDbContext<SalonContext>(
     options => options.UseSqlServer(connStr));
+
 
 
 var app = builder.Build();
