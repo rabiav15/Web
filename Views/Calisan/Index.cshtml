@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Calisan>
+
+
+<h3 style="color:rebeccapurple"> @TempData["mesaj"]</h3>
+
+
+
+
+
+<h2>Çalışanlar</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Ad</th>
+            <th>Soyad</th>
+            <th>Uzmanlık Alanı</th>
+            <th>Salon</th> <!-- Display the salon name -->
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.CalisanAd</td>
+                <td>@item.CalisanSoyad</td>
+                <td>@item.UzmanlikAlani</td>
+                <td>@item.Salon?.SalonAd</td> <!-- Access SalonAd to display the salon name -->
+                <td>
+                    <a href="@Url.Action("CalisanDetay", "Calisan", new { id = item.CalisanID })">Detay</a> |
+                    <a href="@Url.Action("CalisanDuzenle", "Calisan", new { id = item.CalisanID })">Düzenle</a> |
+                    <a href="@Url.Action("CalisanSil", "Calisan", new { id = item.CalisanID })" onclick="return confirm('Silmek istediğinizden emin misiniz?')">Sil</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("CalisanEkle", "Calisan")">Yeni Çalışan Ekle</a>
+

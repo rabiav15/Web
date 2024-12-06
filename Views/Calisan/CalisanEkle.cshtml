@@ -1,0 +1,58 @@
+﻿@model SalonYonetimUygulamasi.Models.Calisan
+
+@{
+	ViewData["Title"] = "Çalışan Ekleme Sayfası";
+
+}
+
+<h3 style="color:rebeccapurple"> @TempData["mesaj"]</h3>
+
+
+
+<h2>Çalışan Ekle</h2>
+
+@if (!string.IsNullOrEmpty(ViewData["ErrorMessage"] as string))
+{
+    <div class="alert alert-danger">
+        @ViewData["ErrorMessage"]
+    </div>
+}
+
+<form asp-action="CalisanEkle" method="post">
+    <div class="form-group">
+        <label for="CalisanAd">Ad</label>
+        <input type="text" class="form-control" id="CalisanAd" name="CalisanAd" required />
+    </div>
+    <div class="form-group">
+        <label for="CalisanSoyad">Soyad</label>
+        <input type="text" class="form-control" id="CalisanSoyad" name="CalisanSoyad" required />
+    </div>
+    <div class="form-group">
+        <label for="UzmanlikAlani">Uzmanlık Alanı</label>
+        <input type="text" class="form-control" id="UzmanlikAlani" name="UzmanlikAlani" required />
+    </div>
+
+    <div class="form-group">
+        <label for="SalonID">Salon</label>
+        <select class="form-control" id="SalonID" name="SalonID" required>
+            <option value="">Salon Seçin</option>
+            @if (ViewBag.Salonlar != null && ViewBag.Salonlar is List<SalonYonetimUygulamasi.Models.Salon>)
+            {
+                var salonlar= ViewBag.Salonlar as List<SalonYonetimUygulamasi.Models.Salon>;
+                @foreach (var salon in salonlar)
+                {
+                    <option value="@salon.SalonID">@salon.SalonAd</option>
+                }
+            }
+            else
+            {
+                <option disabled>Salonlar Yüklenemedi</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Çalışanı Ekle</button>
+</form>
+
+
+

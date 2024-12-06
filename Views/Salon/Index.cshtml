@@ -3,66 +3,32 @@
 <h3 style="color:rebeccapurple"> @TempData["mesaj"]</h3>
 
 
-
-<p>
-	<a asp-action="SalonEkle">Salon Ekle</a>
-
-</p>
+<h2>Salonlar</h2>
 
 <table class="table">
-	<thead>
-	
-
-		<th>
-			@Html.DisplayNameFor(Model=> Model.SalonAd)
-		</th>
-
-	<th>
-			@Html.DisplayNameFor(Model => Model.SalonAdres)
-	</th>
-
-	<th>
-			@Html.DisplayNameFor(Model => Model.SalonTelefon)
-	</th>
-
-	</thead>
-	@if (Model != null && Model.Any())
-	{
-	<tbody>
-
-		@foreach( var item in Model)
-		{
-			<tr>
-					
-				<td>
-					@Html.DisplayFor(modelItem=> item.SalonAd)
-				</td>
-
-				<td>
-					@Html.DisplayFor(modelItem => item.SalonAdres)
-				</td>
-
-				<td>
-					@Html.DisplayFor(modelItem => item.SalonTelefon)
-				</td>
-
-					
-				<td>
-					<a asp-action="SalonDuzenle"asp-route-id="@item.SalonID">Duzenle</a>
-
-				</td>
-				<td>
-					<a asp-action="SalonDetay" asp-route-id="@item.SalonID">Detay</a>
-
-				</td>
-				<td>
-					<a asp-action="SalonSil" asp-route-id="@item.SalonID">Sil</a>
-
-				</td>
-
-			</tr>
-		}
-	</tbody>
-	}
-
+    <thead>
+        <tr>
+            <th>Salon Adı</th> <!-- Display Salon Name -->
+            <th>Salon Adresi</th> <!-- Display Salon Address -->
+            <th>Salon Telefonu</th> <!-- Display Salon Phone -->
+            <th>İşlemler</th> <!-- Operations (Details, Edit, Delete) -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var salon in Model)
+        {
+            <tr>
+                <td>@salon.SalonAd</td> <!-- Display the Salon Name -->
+                <td>@salon.SalonAdres</td> <!-- Display the Salon Address -->
+                <td>@salon.SalonTelefon</td> <!-- Display the Salon Phone -->
+                <td>
+                    <a href="@Url.Action("SalonDetay", "Salon", new { id = salon.SalonID })">Detay</a> |
+                    <a href="@Url.Action("SalonDuzenle", "Salon", new { id = salon.SalonID })">Düzenle</a> |
+                    <a href="@Url.Action("SalonSil", "Salon", new { id = salon.SalonID })" onclick="return confirm('Silmek istediğinizden emin misiniz?')">Sil</a>
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
+
+<a href="@Url.Action("SalonEkle", "Salon")">Yeni Salon Ekle</a>

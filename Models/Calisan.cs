@@ -5,7 +5,7 @@ namespace SalonYonetimUygulamasi.Models
 {
     public class Calisan
     {
-        [Required]
+        
 
         public int CalisanID { get; set; }
 
