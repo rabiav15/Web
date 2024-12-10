@@ -3,11 +3,11 @@
 
 
 <h1>Yeni Randevu Ekle</h1>
-
+<div asp-validation-summary="All" class="alert alert-danger"></div>
 <form asp-action="RandevuCreate" method="post">
     <div class="form-group">
-        <label for="Tarih">Tarih</label>
-        <select class="form-control" id="Tarih" name="TarihDate" required>
+        <label for="TarihDate">Tarih</label>
+        <select class="form-control" id="TarihDate" name="TarihDate" required>
             @foreach (var date in ViewBag.Dates)
             {
                 <option value="@date">@date</option>
@@ -16,8 +16,8 @@
     </div>
 
     <div class="form-group">
-        <label for="Saat">Saat</label>
-        <select class="form-control" id="Saat" name="TarihTime" required>
+        <label for="TarihTime">Saat</label>
+        <select class="form-control" id="TarihTime" name="TarihTime" required>
             @foreach (var hour in ViewBag.Hours)
             {
                 <option value="@hour">@hour</option>
@@ -41,8 +41,8 @@
     </div>
 
     <div class="form-group">
-        <label for="CalisanID">Çalışan</label>
-        <select class="form-control" id="CalisanID" name="CalisanID" required>
+        <label for="CalisanId">Çalışan</label>
+        <select class="form-control" id="CalisanId" name="CalisanID" required>
             @foreach (var calisan in ViewBag.Calisanlar)
             {
                 <option value="@calisan.CalisanID">@calisan.CalisanAd</option>

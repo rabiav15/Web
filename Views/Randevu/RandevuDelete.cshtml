@@ -1,0 +1,25 @@
+﻿@model SalonYonetimUygulamasi.Models.Randevu
+
+<h1>Randevu Sil</h1>
+
+<p>Bu randevuyu silmek istediğinizden emin misiniz?</p>
+
+<div class="form-group">
+    <label>Tarih</label>
+    <p>@Model.Tarih.ToString("yyyy-MM-dd HH:mm")</p>
+</div>
+
+<div class="form-group">
+    <label>İşlem</label>
+    <p>@Model.Islem</p>
+</div>
+
+<div class="form-group">
+    <label>Çalışan</label>
+    <p>@Model.CalisanID</p>
+</div>
+
+<form asp-action="RandevuDelete" method="post">
+    <button type="submit" class="btn btn-danger">Sil</button>
+    <a href="/Randevu/Index" class="btn btn-secondary">İptal</a>
+</form>

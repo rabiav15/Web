@@ -1,0 +1,45 @@
+﻿@model SalonYonetimUygulamasi.Models.Randevu
+
+
+
+<h1>Randevu Düzenle</h1>
+<div asp-validation-summary="All" class="alert alert-danger"></div>
+
+
+
+
+<form asp-action="RandevuEdit" method="post">
+    <div class="form-group">
+        <label for="Tarih">Tarih ve Saat</label>
+        <input type="datetime-local" class="form-control" id="Tarih" name="Tarih" value="@Model.Tarih.ToString("yyyy-MM-ddTHH:mm")" required>
+    </div>
+
+    <div class="form-group">
+        <label for="Islem">İşlem</label>
+        <select class="form-control" id="Islem" name="Islem" required>
+            @foreach (var islem in ViewBag.Islemler)
+            {
+                @islem
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="Ucret">Ücret</label>
+        <input type="text" class="form-control" id="Ucret" name="Ucret" value="@Model.Ucret" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="CalisanID">Çalışan</label>
+        <select class="form-control" id="CalisanID" name="CalisanID" required>
+            @foreach (var calisan in ViewBag.Calisanlar)
+            {
+                @calisan.CalisanID
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+</form>
+
+<a href="/Randevu/Index" class="btn btn-secondary">Geri</a>

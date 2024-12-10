@@ -7,21 +7,24 @@
         <tr>
             <th>Tarih</th>
             <th>İşlem</th>
-            <th>Ücret</th>
             <th>Çalışan</th>
+            <th>İşlemler</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var randevu in Model)
         {
             <tr>
-                <td>@randevu.Tarih.ToString("dd.MM.yyyy HH:mm")</td>
+                <td>@randevu.Tarih.ToString("yyyy-MM-dd HH:mm")</td>
                 <td>@randevu.Islem</td>
-                <td>@randevu.Ucret</td>
                 <td>@randevu.Calisan.CalisanAd</td>
+                <td>
+                    <a href="/Randevu/RandevuDetails/@randevu.RandevuID" class="btn btn-info">Görüntüle</a>
+                    <a href="/Randevu/RandevuEdit/@randevu.RandevuID" class="btn btn-warning">Düzenle</a>
+                    <a href="/Randevu/RandevuDelete/@randevu.RandevuID" class="btn btn-danger">Sil</a>
+                </td>
             </tr>
         }
     </tbody>
 </table>
-
-<a href="/Randevu/RandevuCreate" class="btn btn-success">Yeni Randevu Ekle</a>
+<a href="@Url.Action("RandevuCreate", "Randevu")">Randevu Ekle</a>
