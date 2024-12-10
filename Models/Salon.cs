@@ -17,7 +17,8 @@ namespace SalonYonetimUygulamasi.Models
 		[Required(ErrorMessage = "Salon telefon numarası zorunludur.")]
 		public string SalonTelefon { get; set; }
 
-     
-        public ICollection<Calisan> Calisanlar { get; set; }
+	
+
+		public ICollection<Calisan> Calisanlar { get; set; }
     }
 }

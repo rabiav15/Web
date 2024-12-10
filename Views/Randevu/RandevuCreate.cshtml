@@ -1,0 +1,71 @@
+﻿@model SalonYonetimUygulamasi.Models.Randevu
+
+
+
+<h1>Yeni Randevu Ekle</h1>
+
+<form asp-action="RandevuCreate" method="post">
+    <div class="form-group">
+        <label for="Tarih">Tarih</label>
+        <select class="form-control" id="Tarih" name="TarihDate" required>
+            @foreach (var date in ViewBag.Dates)
+            {
+                <option value="@date">@date</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="Saat">Saat</label>
+        <select class="form-control" id="Saat" name="TarihTime" required>
+            @foreach (var hour in ViewBag.Hours)
+            {
+                <option value="@hour">@hour</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="Islem">İşlem</label>
+        <select class="form-control" id="Islem" name="Islem" required onchange="setPrice()">
+            @foreach (var islem in ViewBag.Islemler)
+            {
+                <option value="@islem">@islem</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="Ucret">Ücret</label>
+        <input type="text" class="form-control" id="Ucret" name="Ucret" readonly>
+    </div>
+
+    <div class="form-group">
+        <label for="CalisanID">Çalışan</label>
+        <select class="form-control" id="CalisanID" name="CalisanID" required>
+            @foreach (var calisan in ViewBag.Calisanlar)
+            {
+                <option value="@calisan.CalisanID">@calisan.CalisanAd</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+</form>
+
+<a href="/Randevu/Index" class="btn btn-secondary">Geri</a>
+
+<script>
+    function setPrice() {
+        const islem = document.getElementById("Islem").value;
+        const ucretField = document.getElementById("Ucret");
+
+        if (islem === "Makyaj") {
+            ucretField.value = 500;
+        } else if (islem === "Saç") {
+            ucretField.value = 750;
+        } else {
+            ucretField.value = 0;
+        }
+    }
+</script>

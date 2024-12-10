@@ -1,0 +1,27 @@
+﻿@model IEnumerable<SalonYonetimUygulamasi.Models.Randevu>
+
+<h1>Randevu Listesi</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tarih</th>
+            <th>İşlem</th>
+            <th>Ücret</th>
+            <th>Çalışan</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var randevu in Model)
+        {
+            <tr>
+                <td>@randevu.Tarih.ToString("dd.MM.yyyy HH:mm")</td>
+                <td>@randevu.Islem</td>
+                <td>@randevu.Ucret</td>
+                <td>@randevu.Calisan.CalisanAd</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="/Randevu/RandevuCreate" class="btn btn-success">Yeni Randevu Ekle</a>

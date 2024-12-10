@@ -1,0 +1,40 @@
+﻿@model SalonYonetimUygulamasi.Models.Calisan
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CalisanDuzenle">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" name="CalisanID" value="@Model.CalisanID" />
+
+            <div class="form-group">
+                <label asp-for="CalisanAd" class="control-label"></label>
+                <input asp-for="CalisanAd" class="form-control" />
+                <span asp-validation-for="CalisanAd" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CalisanSoyad" class="control-label"></label>
+                <input asp-for="CalisanSoyad" class="form-control" />
+                <span asp-validation-for="CalisanSoyad" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UzmanlikAlani" class="control-label"></label>
+                <input asp-for="UzmanlikAlani" class="form-control" />
+                <span asp-validation-for="UzmanlikAlani" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Kaydet" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Tüm Çalışanlar</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

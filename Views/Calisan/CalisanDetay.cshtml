@@ -1,0 +1,47 @@
+﻿@model SalonYonetimUygulamasi.Models.Calisan
+
+@{
+	ViewData["Title"] = "Çalışan Detay Gösterme Sayfası";
+
+}
+
+
+<h2>SEÇİLEN ÇALIŞANA AİT BİLGİLER AŞAĞIDADIR</h2>
+
+<hr />
+
+<div>
+	<dl class="row">
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(Model => Model.SalonID)
+		</dt>
+		<dt class="col-sm-10">
+			@Html.DisplayFor(Model => Model.SalonID)
+		</dt>
+
+
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(Model => Model.CalisanAd)
+		</dt>
+		<dt class="col-sm-10">
+			@Html.DisplayFor(Model => Model.CalisanAd)
+		</dt>
+
+
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(Model => Model.CalisanSoyad)
+		</dt>
+		<dt class="col-sm-10">
+			@Html.DisplayFor(Model => Model.CalisanSoyad)
+		</dt>
+
+
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(Model => Model.UzmanlikAlani)
+		</dt>
+		<dt class="col-sm-10">
+			@Html.DisplayFor(Model => Model.UzmanlikAlani)
+		</dt>
+	</dl>
+</div>
+<hr />

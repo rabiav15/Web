@@ -1,12 +1,12 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace SalonYonetimUygulamasi.Models
 {
     public class Calisan
     {
-        
-
+		[Key] 
         public int CalisanID { get; set; }
 
         [Required]

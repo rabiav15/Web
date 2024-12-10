@@ -44,29 +44,34 @@ namespace SalonYonetimUygulamasi.Controllers
 		[HttpPost]
 		public IActionResult CalisanEkle(Calisan c)
 		{
-			if (!ModelState.IsValid)
+
+			if (ModelState.IsValid)
 			{
-				// Check if a salon with the same name already exists
-				var existingCalisan = _context.Calisanlar
-					.FirstOrDefault(x => x.CalisanAd == c.CalisanAd || x.CalisanSoyad == c.CalisanSoyad || x.UzmanlikAlani == c.UzmanlikAlani );
-
-				if (existingCalisan!= null)
-				{
-					// If a salon with the same name/phone/address exists, show an error message
-					TempData["mesaj"] = "Bu Çalışan Zaten Mevcut,Lütfen Farklı Bir Çalışan Giriniz!";
-					return View();
-				}
-
-				// If no duplicate found, add the new salon
-				_context.Calisanlar.Add(c);
-				_context.SaveChanges();
-
-				TempData["mesaj"] = c.CalisanAd + " " + c.CalisanSoyad + " " + c.UzmanlikAlani+ " bilgileri bulunan çalışan başarıyla eklenmiştir.";
-				return RedirectToAction("Index");
+				TempData["mesaj"] = "Lütfen tüm zorunlu alanları doldurun!";
+				ViewBag.Salonlar = _context.Salonlar.ToList(); // Salon listesini tekrar dolduruyoruz
+				return View(c);
 			}
 
-			TempData["mesaj"] = "Ekleme Başarısız!";
-			return View();
+			// Aynı isimde çalışan var mı kontrolü
+			var existingCalisan = _context.Calisanlar
+				.FirstOrDefault(x => x.CalisanAd == c.CalisanAd &&
+									 x.CalisanSoyad == c.CalisanSoyad &&
+									 x.UzmanlikAlani == c.UzmanlikAlani);
+
+			if (existingCalisan != null)
+			{
+				TempData["mesaj"] = "Bu çalışan zaten mevcut. Lütfen farklı bir çalışan giriniz!";
+				ViewBag.Salonlar = _context.Salonlar.ToList(); // Salon listesini tekrar dolduruyoruz
+				return View(c);
+			}
+
+			// Yeni çalışanı ekliyoruz
+			_context.Calisanlar.Add(c);
+			_context.SaveChanges();
+
+			TempData["mesaj"] = $"{c.CalisanAd} {c.CalisanSoyad} ({c.UzmanlikAlani}) bilgileri ile çalışan başarıyla eklenmiştir.";
+			return RedirectToAction("Index");
+
 		}
 		// Details: Show details of a specific employee
 		public IActionResult CalisanDetay(int? id)
@@ -89,47 +94,42 @@ namespace SalonYonetimUygulamasi.Controllers
 		}
 
 		// Edit: Show the form to edit an employee's details
-		public IActionResult CalisanDuzenle(int? id)
+		public IActionResult CalisanDuzenle(int? id )
 		{
-			if (id == null)
+			if (id is null)
 			{
-				TempData["hata"] = "Çalışan ID bilgisi eksik.";
-				return RedirectToAction("Index");
+				TempData["hata"] = "Düzenleme İçin SalonID Gerekli,Kontrol Edin!";
+				return View("CalisanHata");
 			}
-
-			var calisan = _context.Calisanlar.FirstOrDefault(c => c.CalisanID == id);
-			if (calisan == null)
+			var s = _context.Calisanlar.FirstOrDefault(x => x.CalisanID == id);
+			if (s == null)
 			{
-				TempData["hata"] = "Çalışan bulunamadı.";
-				return RedirectToAction("Index");
+				TempData["mesaj"] = "Lütfen Geçerli Bir ID Girin!";
+				return View("CalisanHata");
 			}
-
-			ViewBag.Salonlar = _context.Salonlar.ToList(); // For dropdown list
-			return View(calisan);
+			return View(s);
 		}
 
-		// Edit (POST): Save the changes to an employee's details
 		[HttpPost]
-		public IActionResult CalisanDuzenle(int id, Calisan calisan)
+		public IActionResult CalisanDuzenle(int id, Calisan c)
 		{
-			if (id != calisan.CalisanID)
+			if (id != c.CalisanID)
 			{
-				TempData["hata"] = "Geçersiz çalışan ID.";
-				return RedirectToAction("Index");
+				TempData["hata"] = "Olmayan Çalışanı Düzenlemeye Çalışıyorsunuz...";
+				return View("CalisanHata");
 			}
-
-			if (ModelState.IsValid)
+			if (!ModelState.IsValid)
 			{
-				_context.Calisanlar.Update(calisan);
+				_context.Calisanlar.Update(c);
 				_context.SaveChanges();
-				TempData["mesaj"] = "Çalışan başarıyla güncellenmiştir.";
+
+				TempData["mesaj"] = c.CalisanAd + "  Adlı Çalışanın Bilgileri Başarıyla Güncellenmiştir!";
 				return RedirectToAction("Index");
 			}
-
-			ViewBag.Salonlar = _context.Salonlar.ToList(); // For dropdown list
-			TempData["hata"] = "Çalışan güncellenemedi. Lütfen tekrar deneyin.";
-			return View(calisan);
+			TempData["hata"] = "Lütfen Alanları Eksiksiz Doldurunuz!";
+			return View("CalisanHata");
 		}
+
 
 		// Delete: Delete an employee
 		public IActionResult CalisanSil(int? id)
@@ -152,5 +152,11 @@ namespace SalonYonetimUygulamasi.Controllers
 			TempData["mesaj"] = "Çalışan başarıyla silinmiştir.";
 			return RedirectToAction("Index");
 		}
+
+		public IActionResult CalisanHata()
+		{
+			return View();
+		}
+
 	}
 }
