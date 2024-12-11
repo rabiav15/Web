@@ -19,6 +19,34 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+
+                        <ul class="navbar-nav ms-auto">
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/Admin/Index">Admin Paneli</a>
+                                </li>
+                            }
+                            @if (User.IsInRole("Üye"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/Uye/Index">Üye Paneli</a>
+                                </li>
+                            }
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/Account/Logout">Çıkış Yap</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/Account/Login">Giriş Yap</a>
+                                </li>
+                            }
+                        </ul>
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
@@ -38,6 +66,8 @@
                         </li>
                     </ul>
                 </div>
+              
+                </ul>
             </div>
         </nav>
     </header>

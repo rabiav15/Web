@@ -1,0 +1,14 @@
+﻿<h1>Profilim</h1>
+<p>Kullanıcı bilgilerinizi burada görüntüleyebilirsiniz.</p>
+
+<form method="post" action="/Uye/ProfilGuncelle">
+    <div class="form-group">
+        <label for="Email">Email</label>
+        <input type="email" class="form-control" id="Email" name="Email" value="@User.Identity.Name" readonly>
+    </div>
+    <div class="form-group">
+        <label for="Telefon">Telefon</label>
+        <input type="text" class="form-control" id="Telefon" name="Telefon">
+    </div>
+    <button type="submit" class="btn btn-primary">Güncelle</button>
+</form>
