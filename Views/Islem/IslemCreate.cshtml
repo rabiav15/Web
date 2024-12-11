@@ -1,0 +1,29 @@
+﻿@model Islem
+
+<h1>Yeni İşlem Oluştur</h1>
+<form asp-action="IslemCreate" method="post">
+    <div class="form-group">
+        <label for="IslemAdi">İşlem Adı</label>
+        <input type="text" class="form-control" id="IslemAdi" name="IslemAdi" required>
+    </div>
+    <div class="form-group">
+        <label for="IslemUcreti">Ücret</label>
+        <input type="number" class="form-control" id="IslemUcreti" name="IslemUcreti" required>
+    </div>
+    <div class="form-group">
+        <label for="IslemSuresi">İşlem Süresi (dakika)</label>
+        <input type="number" class="form-control" id="IslemSuresi" name="IslemSuresi" required>
+    </div>
+    <div class="form-group">
+        <label for="CalisanID">Çalışan</label>
+        <select class="form-control" id="CalisanID" name="CalisanID" required>
+            @foreach (var calisan in ViewBag.Calisanlar)
+            {
+                <option value="@calisan.CalisanID">@calisan.CalisanAd</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+</form>
+<a href="/Islem/Index" class="btn btn-secondary">Geri</a>
+

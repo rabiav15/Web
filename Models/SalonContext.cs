@@ -11,7 +11,22 @@ namespace SalonYonetimUygulamasi.Models
 
 		public DbSet<Randevu> Randevular { get; set; }
 
+		public DbSet<Islem> Islemler { get; set; }
+
 		public SalonContext(DbContextOptions<SalonContext> options) : base(options) { }
+
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			base.OnModelCreating(modelBuilder);
+
+			// Islem ile Calisan arasında ilişki tanımlıyoruz
+			modelBuilder.Entity<Islem>()
+				.HasOne(i => i.Calisan)
+				.WithMany(c => c.Islemler)
+				.HasForeignKey(i => i.CalisanID)
+				.OnDelete(DeleteBehavior.Restrict);
+		}
 	}
 
 }

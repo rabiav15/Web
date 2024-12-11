@@ -1,0 +1,29 @@
+﻿@model Islem
+
+<h1>İşlem Sil</h1>
+<p>Bu işlemi silmek istediğinizden emin misiniz?</p>
+
+<div class="form-group">
+    <label><strong>İşlem Adı:</strong></label>
+    <p>@Model.IslemAdi</p>
+</div>
+
+<div class="form-group">
+    <label><strong>Ücret:</strong></label>
+    <p>@Model.IslemUcreti TL</p>
+</div>
+
+<div class="form-group">
+    <label><strong>İşlem Süresi:</strong></label>
+    <p>@Model.IslemSuresi dakika</p>
+</div>
+
+<div class="form-group">
+    <label><strong>Çalışan:</strong></label>
+    <p>@Model.Calisan?.CalisanAd</p>
+</div>
+
+<form asp-action="IslemSil" method="post">
+    <button type="submit" class="btn btn-danger">Sil</button>
+    <a href="/Islem/Index" class="btn btn-secondary">İptal</a>
+</form>

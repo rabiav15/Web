@@ -1,0 +1,25 @@
+﻿@model Islem
+
+<h1>İşlem Detayları</h1>
+
+<div class="form-group">
+    <label><strong>İşlem Adı:</strong></label>
+    <p>@Model.IslemAdi</p>
+</div>
+
+<div class="form-group">
+    <label><strong>Ücret:</strong></label>
+    <p>@Model.IslemUcreti TL</p>
+</div>
+
+<div class="form-group">
+    <label><strong>İşlem Süresi:</strong></label>
+    <p>@Model.IslemSuresi dakika</p>
+</div>
+
+<div class="form-group">
+    <label><strong>Çalışan:</strong></label>
+    <p>@Model.Calisan?.CalisanAd</p>
+</div>
+
+<a href="/Islem/Index" class="btn btn-secondary">Geri</a>
