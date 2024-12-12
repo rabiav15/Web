@@ -3,10 +3,10 @@
 }
 
 <h1>Çıkış Yap</h1>
+<p>Oturumunuzu kapatmak istediğinizden emin misiniz?</p>
 
-<form asp-action="Logout" method="post">
-    <button type="submit" class="btn btn-primary">Çıkış Yap</button>
+<form asp-action="LogoutConfirmed" method="post">
+    <button type="submit" class="btn btn-danger">Çıkış Yap</button>
+    <a href="/Home/Index" class="btn btn-secondary">İptal</a>
 </form>
-
-<a href="/Home/Index" class="btn btn-secondary">Ana Sayfa</a>
 

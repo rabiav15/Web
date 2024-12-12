@@ -1,25 +1,26 @@
-﻿@model LoginView
+﻿@model AdminLoginView
 
-<h1>Giriş Yap</h1>
-
-<div asp-validation-summary="All" class="alert alert-danger"></div>
+<h1>Admin Girişi</h1>
+<div asp-validation-summary="All" class="text-danger"></div>
 
 <form asp-action="Login" method="post">
     <div class="form-group">
         <label for="Email">Email</label>
-        <input asp-for="Email" class="form-control" id="Email" />
+        <input asp-for="Email" class="form-control" />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
+
     <div class="form-group">
         <label for="Password">Şifre</label>
-        <input asp-for="Password" class="form-control" id="Password" />
+        <input asp-for="Password" class="form-control" />
         <span asp-validation-for="Password" class="text-danger"></span>
     </div>
+
     <div class="form-check">
-        <input asp-for="RememberMe" class="form-check-input" id="RememberMe" />
+        <input asp-for="RememberMe" class="form-check-input" />
         <label asp-for="RememberMe" class="form-check-label">Beni Hatırla</label>
     </div>
+
     <button type="submit" class="btn btn-primary">Giriş Yap</button>
 </form>
 
-<a href="/Account/Register">Üye Ol</a>

@@ -21,6 +21,7 @@ namespace SalonYonetimUygulamasi.Models
         [Required]
             public double Ucret { get; set; }
 
+
             // İlişki: Randevu bir çalışana bağlıdır.
             public int CalisanID { get; set; }
             public Calisan Calisan { get; set; }

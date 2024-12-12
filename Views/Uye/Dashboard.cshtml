@@ -1,0 +1,28 @@
+﻿@model UyeDashboardView
+
+<h1>Hoş Geldiniz, @Model.Email</h1>
+
+<h2>Randevularım</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tarih</th>
+            <th>Saat</th>
+            <th>İşlem</th>
+            <th>Çalışan</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var randevu in Model.Randevular)
+        {
+            <tr>
+                <td>@randevu.Tarih.ToShortDateString()</td>
+                <td>@randevu.Tarih.ToShortTimeString()</td>
+                <td>@randevu.Islem</td>
+                <td>@randevu.Calisan.CalisanAd</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="/Randevu/RandevuCreate" class="btn btn-primary">Yeni Randevu Al</a>

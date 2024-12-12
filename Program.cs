@@ -13,9 +13,26 @@ var connStr = "Server=(localdb)\\mssqllocaldb;Database=SalonYonetimUygulamasi;Tr
 builder.Services.AddDbContext<SalonContext>(
     options => options.UseSqlServer(connStr));
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-	.AddEntityFrameworkStores<SalonContext>()
-	.AddDefaultTokenProviders();
+
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+{
+	options.Password.RequireDigit = true;
+	options.Password.RequiredLength = 6;
+	options.Password.RequireNonAlphanumeric = false;
+	options.Password.RequireUppercase = false;
+	options.Password.RequireLowercase = true;
+})
+.AddEntityFrameworkStores<SalonContext>()
+.AddDefaultTokenProviders();
+
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+	options.LoginPath = "/Account/Login"; // Üye giriþ yolu
+	options.AccessDeniedPath = "/Account/AccessDenied"; // Eriþim engellendi
+});
+
 
 
 var app = builder.Build();
@@ -25,7 +42,7 @@ using (var scope = app.Services.CreateScope())
 	var services = scope.ServiceProvider;
 	try
 	{
-		// Rolleri ve kullanýcýlarý tekrar zorla
+		
 		await SeedRolesAndUsers.SeedRolesUsers(services);
 	}
 	catch (Exception ex)
@@ -33,6 +50,11 @@ using (var scope = app.Services.CreateScope())
 		Console.WriteLine($"Seed iþlemi sýrasýnda hata oluþtu: {ex.Message}");
 	}
 }
+
+
+
+
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -45,6 +67,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
 
 
 app.UseAuthentication();

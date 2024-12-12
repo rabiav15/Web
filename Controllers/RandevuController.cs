@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SalonYonetimUygulamasi.Models;
 
@@ -8,11 +9,13 @@ namespace SalonYonetimUygulamasi.Controllers
 {
 	public class RandevuController : Controller
 	{
-
+		
 		private readonly SalonContext _context;
+		
 
 		public RandevuController(SalonContext context)
 		{
+			
 			_context = context;
 		}
 		public IActionResult Index()
@@ -95,7 +98,8 @@ namespace SalonYonetimUygulamasi.Controllers
 				{
 					_context.Randevular.Add(randevu);
 					_context.SaveChanges();
-					return RedirectToAction(nameof(Index));
+					return RedirectToAction("Randevularim", "Uye");
+
 				}
 			}
 			catch (Exception ex)
@@ -134,6 +138,7 @@ namespace SalonYonetimUygulamasi.Controllers
 
 			return View(randevu);
 		}
+	
 
 
 		public IActionResult RandevuDetails(int id)
