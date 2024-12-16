@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using SalonYonetimUygulamasi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,17 +15,10 @@ builder.Services.AddDbContext<SalonContext>(
     options => options.UseSqlServer(connStr));
 
 
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+	.AddEntityFrameworkStores<SalonContext>()
+	.AddDefaultTokenProviders();
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
-{
-	options.Password.RequireDigit = true;
-	options.Password.RequiredLength = 6;
-	options.Password.RequireNonAlphanumeric = false;
-	options.Password.RequireUppercase = false;
-	options.Password.RequireLowercase = true;
-})
-.AddEntityFrameworkStores<SalonContext>()
-.AddDefaultTokenProviders();
 
 
 builder.Services.ConfigureApplicationCookie(options =>
@@ -51,7 +45,11 @@ using (var scope = app.Services.CreateScope())
 	}
 }
 
-
+using (var scope = app.Services.CreateScope())
+{
+	var services = scope.ServiceProvider;
+	await SeedRolesAndUsers.SeedRolesUsers(services); // Seed iþlemini baþlat
+}
 
 
 

@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SalonYonetimUygulamasi.Models;
@@ -6,6 +7,7 @@ using SalonYonetimUygulamasi.Models;
 
 namespace SalonYonetimUygulamasi.Controllers
 {
+	[Authorize(Roles = "Admin")]
 	public class SalonController : Controller
 	{
 		private readonly SalonContext _context;

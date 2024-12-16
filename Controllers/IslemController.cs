@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SalonYonetimUygulamasi.Models;
 namespace SalonYonetimUygulamasi.Controllers
 {
+	[Authorize(Roles = "Admin")]
 	public class IslemController : Controller
 	{
 

@@ -7,7 +7,7 @@ using SalonYonetimUygulamasi.Models;
 namespace SalonYonetimUygulamasi.Controllers
 {
 
-
+	[Authorize(Roles = "Admin")]
 	[Route("Admin")]
 	public class AdminController : Controller
 	{
@@ -20,14 +20,12 @@ namespace SalonYonetimUygulamasi.Controllers
 			_userManager = userManager;
 		}
 
-		// GET: Admin/Login
 		[HttpGet("Login")]
 		public IActionResult Login()
 		{
 			return View();
 		}
 
-		// POST: Admin/Login
 		[HttpPost("Login")]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Login(AdminLoginView model)
@@ -37,42 +35,41 @@ namespace SalonYonetimUygulamasi.Controllers
 				var user = await _userManager.FindByEmailAsync(model.Email);
 				if (user == null)
 				{
-					ModelState.AddModelError("", "Geçersiz kullanıcı bilgileri.");
+					ModelState.AddModelError("", "Kullanıcı bulunamadı.");
 					return View(model);
 				}
 
 				var roles = await _userManager.GetRolesAsync(user);
 				if (!roles.Contains("Admin"))
 				{
-					ModelState.AddModelError("", "Yalnızca Admin yetkisi olan kullanıcılar giriş yapabilir.");
+					ModelState.AddModelError("", "Bu kullanıcı Admin rolüne sahip değil.");
 					return View(model);
 				}
 
-				var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+				var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, false);
 				if (result.Succeeded)
 				{
 					return RedirectToAction("Dashboard", "Admin");
 				}
 
-				ModelState.AddModelError("", "Giriş başarısız. Lütfen bilgilerinizi kontrol edin.");
+				ModelState.AddModelError("", "Geçersiz giriş bilgileri.");
 			}
 
 			return View(model);
 		}
 
-		// GET: Admin/Dashboard
 		[HttpGet("Dashboard")]
 		public IActionResult Dashboard()
 		{
-			return View();
-		}
+			// Dashboard'a özel veriler burada hazırlanabilir
+			var model = new AdminDashboardView
+			{
+				TotalUsers = 100, // Örnek değer
+				TotalRandevu = 50, // Örnek değer
+				TotalCalisanlar = 10 // Örnek değer
+			};
 
-		// GET: Admin/Logout
-		[HttpGet("Logout")]
-		public async Task<IActionResult> Logout()
-		{
-			await _signInManager.SignOutAsync();
-			return RedirectToAction("Login", "Admin");
+			return View(model);
 		}
 	}
 }
