@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SalonYonetimUygulamasi.Migrations;
 using SalonYonetimUygulamasi.Models;
+using Randevu = SalonYonetimUygulamasi.Models.Randevu;
 
 
 
@@ -20,11 +22,11 @@ namespace SalonYonetimUygulamasi.Controllers
 			
 			_context = context;
 		}
-		[Authorize(Roles = "Admin")]
+		
 		public IActionResult Index()
 		{
 
-			var randevular = _context.Randevular.Include(r => r.Calisan).ToList();
+			var randevular = _context.Randevular.Include(r => r.Calisan).Include(r=> r.Islem).ToList();
 			return View(randevular);
 		}
 
@@ -32,41 +34,47 @@ namespace SalonYonetimUygulamasi.Controllers
 		// GET: Randevu/Create
 		public IActionResult RandevuCreate()
 		{
-			// Önümüzdeki 7 günün tarihlerini ViewBag'e gönderiyoruz
-			var dates = new List<string>();
-			var now = DateTime.Now.Date; // Bugünün tarihi
-			for (int i = 0; i < 7; i++)
+			try
 			{
-				dates.Add(now.AddDays(i).ToString("yyyy-MM-dd"));
+				// Tarih seçeneklerini oluşturuyoruz
+				var dates = new List<string>();
+				var now = DateTime.Now.Date; // Bugünün tarihi
+				for (int i = 0; i < 7; i++)
+				{
+					dates.Add(now.AddDays(i).ToString("yyyy-MM-dd"));
+				}
+				ViewBag.Dates = dates;
+
+				// Saat seçeneklerini oluşturuyoruz
+				var allHours = new List<string>
+		{
+			"09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
+			"12:00", "13:30", "14:00", "14:30", "15:00", "15:30",
+			"16:00", "16:30"
+		};
+
+				// Mevcut randevuların saatlerini alıyoruz
+				var takenHours = _context.Randevular
+					.Select(r => r.Tarih.ToString("HH:mm"))
+					.ToList();
+
+				// Alınmamış saatleri belirliyoruz
+				ViewBag.Hours = allHours.Where(hour => !takenHours.Contains(hour)).ToList();
+
+				// Çalışanlar ve işlemleri ViewBag ile gönderiyoruz
+				ViewBag.Calisanlar = _context.Calisanlar.ToList();
+				ViewBag.Islemler = _context.Islemler.ToList();
+
+				return View();
 			}
-			ViewBag.Dates = dates;
-
-			// Saatler (sabit saatler listesi)
-			var allHours = new List<string>
-	{
-		"09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
-		"12:00", "13:30", "14:00", "14:30", "15:00", "15:30",
-		"16:00", "16:30"
-	};
-
-			// Randevu alınmış saatleri filtreleyelim
-			var takenHours = _context.Randevular
-				.Where(r => r.CalisanID == 1) // Eğer çalışan id varsa, onu da filtreleyin
-				.Select(r => r.Tarih.ToString("HH:mm"))
-				.ToList();
-
-			// Alınmamış saatleri filtreleyelim
-			var availableHours = allHours.Where(hour => !takenHours.Contains(hour)).ToList();
-
-			// ViewBag'e alınmış saatleri atıyoruz
-			ViewBag.Hours = availableHours;
-
-			// Çalışanlar ve işlemler veritabanından çekiliyor
-			ViewBag.Calisanlar = _context.Calisanlar.ToList();
-			ViewBag.Islemler = _context.Islemler.ToList(); // İşlemleri dinamik olarak alıyoruz
-
-			return View();
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Hata: {ex.Message}");
+				return View("Error"); // Hata sayfasına yönlendir
+			}
 		}
+
+
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
@@ -77,9 +85,9 @@ namespace SalonYonetimUygulamasi.Controllers
 				// Tarih ve saat birleştirme
 				if (!string.IsNullOrEmpty(TarihDate) && !string.IsNullOrEmpty(TarihTime))
 				{
-					var selectedDate = DateTime.Parse(TarihDate);  // Tarih bilgisini al
-					var selectedTime = TimeSpan.Parse(TarihTime);  // Saat bilgisini al
-					randevu.Tarih = selectedDate + selectedTime;  // Tarih ve saati birleştir
+					var selectedDate = DateTime.Parse(TarihDate);
+					var selectedTime = TimeSpan.Parse(TarihTime);
+					randevu.Tarih = selectedDate + selectedTime;
 
 					// Aynı çalışandan aynı tarihte ve saatte randevu olup olmadığını kontrol et
 					var mevcutRandevu = _context.Randevular
@@ -99,7 +107,7 @@ namespace SalonYonetimUygulamasi.Controllers
 				var selectedIslem = _context.Islemler.FirstOrDefault(i => i.IslemID == randevu.IslemID);
 				if (selectedIslem != null)
 				{
-					randevu.IslemUcreti = selectedIslem.IslemUcreti;  // İşlem ücretini dinamik olarak ata
+					randevu.IslemUcreti = selectedIslem.IslemUcreti;
 				}
 				else
 				{
@@ -120,21 +128,20 @@ namespace SalonYonetimUygulamasi.Controllers
 			}
 
 			// Sayfa yeniden yüklendiğinde gerekli ViewBag verilerini tekrar yükleyelim
-			ViewBag.Dates = new List<string>();  // Gerektiği şekilde
+			ViewBag.Dates = new List<string>();
 			ViewBag.Hours = new List<string>();
 			ViewBag.Calisanlar = _context.Calisanlar.ToList();
-			ViewBag.Islemler = _context.Islemler.ToList();  // İşlemleri tekrar yükleyelim
+			ViewBag.Islemler = _context.Islemler.ToList();
 
 			return View(randevu);
 		}
 
-
-
 		public IActionResult RandevuDetails(int id)
 		{
 			var randevu = _context.Randevular
-				.Include(r => r.Calisan)
-				.FirstOrDefault(r => r.RandevuID == id);
+		.Include(r => r.Calisan) // Çalışan bilgisi dahil ediliyor
+		.Include(r => r.Islem) // İşlem bilgisi dahil ediliyor
+		.FirstOrDefault(r => r.RandevuID == id);
 
 			if (randevu == null)
 			{

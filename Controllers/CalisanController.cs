@@ -5,7 +5,7 @@ using SalonYonetimUygulamasi.Models;
 
 namespace SalonYonetimUygulamasi.Controllers
 {
-	[Authorize(Roles = "Admin")]
+
 	public class CalisanController : Controller
 	{
 
@@ -96,41 +96,61 @@ namespace SalonYonetimUygulamasi.Controllers
 		}
 
 		// Edit: Show the form to edit an employee's details
-		public IActionResult CalisanDuzenle(int? id )
+		public IActionResult CalisanDuzenle(int id)
 		{
-			if (id is null)
+			// Çalışanı ID'ye göre veritabanından alıyoruz
+			var calisan = _context.Calisanlar.FirstOrDefault(c => c.CalisanID == id);
+
+			if (calisan == null)
 			{
-				TempData["hata"] = "Düzenleme İçin SalonID Gerekli,Kontrol Edin!";
-				return View("CalisanHata");
+				return NotFound(); // Çalışan bulunamazsa, 404 döndür
 			}
-			var s = _context.Calisanlar.FirstOrDefault(x => x.CalisanID == id);
-			if (s == null)
-			{
-				TempData["mesaj"] = "Lütfen Geçerli Bir ID Girin!";
-				return View("CalisanHata");
-			}
-			return View(s);
+
+			// Salonlar için ViewBag'e salonları yüklüyoruz
+			ViewBag.Salonlar = _context.Salonlar.ToList();
+
+			return View(calisan); // Çalışan verisini formda göstermek için view'e gönderiyoruz
 		}
 
 		[HttpPost]
-		public IActionResult CalisanDuzenle(int id, Calisan c)
+		[ValidateAntiForgeryToken]
+		public IActionResult CalisanDuzenle(Calisan calisan)
 		{
-			if (id != c.CalisanID)
+			try
 			{
-				TempData["hata"] = "Olmayan Çalışanı Düzenlemeye Çalışıyorsunuz...";
-				return View("CalisanHata");
-			}
-			if (!ModelState.IsValid)
-			{
-				_context.Calisanlar.Update(c);
-				_context.SaveChanges();
+				// Çalışan verisini veritabanından alıyoruz
+				var mevcutCalisan = _context.Calisanlar.FirstOrDefault(c => c.CalisanID == calisan.CalisanID);
 
-				TempData["mesaj"] = c.CalisanAd + "  Adlı Çalışanın Bilgileri Başarıyla Güncellenmiştir!";
-				return RedirectToAction("Index");
+				if (mevcutCalisan == null)
+				{
+					return NotFound(); // Çalışan bulunamazsa, 404 döndür
+				}
+
+				// Çalışanın bilgilerini güncelliyoruz
+				mevcutCalisan.CalisanAd = calisan.CalisanAd;
+				mevcutCalisan.CalisanSoyad = calisan.CalisanSoyad;
+				mevcutCalisan.UzmanlikAlani = calisan.UzmanlikAlani;
+
+				// Model doğrulama işlemi yapıyoruz
+				if (!ModelState.IsValid)
+				{
+					_context.SaveChanges(); // Değişiklikleri kaydediyoruz
+					return RedirectToAction("Index"); // Güncelleme başarılı ise, Index sayfasına yönlendir
+				}
+				else
+				{
+					// Model geçersizse, hata mesajlarını döndür
+					ModelState.AddModelError("", "Geçersiz veriler. Lütfen tekrar deneyin.");
+					return View(calisan); // Hatalı formu kullanıcıya geri gönder
+				}
 			}
-			TempData["hata"] = "Lütfen Alanları Eksiksiz Doldurunuz!";
-			return View("CalisanHata");
+			catch (Exception ex)
+			{
+				ModelState.AddModelError("", $"Bir hata oluştu: {ex.Message}");
+				return View(calisan); // Hata durumunda formu tekrar gösteriyoruz
+			}
 		}
+
 
 
 		// Delete: Delete an employee

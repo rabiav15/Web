@@ -7,6 +7,7 @@
         <tr>
             <th>Tarih</th>
             <th>İşlem</th>
+            <th>İşlem Ücreti</th>
             <th>Çalışan</th>
             <th>İşlemler</th>
         </tr>
@@ -16,7 +17,8 @@
         {
             <tr>
                 <td>@randevu.Tarih.ToString("yyyy-MM-dd HH:mm")</td>
-                <td>@randevu.Islem</td>
+                <td>@randevu.Islem.IslemAdi</td>
+                <td>@randevu.Islem.IslemUcreti</td>
                 <td>@randevu.Calisan.CalisanAd</td>
                 <td>
                     <a href="/Randevu/RandevuDetails/@randevu.RandevuID" class="btn btn-info">Görüntüle</a>

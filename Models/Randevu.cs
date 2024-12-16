@@ -6,8 +6,7 @@ namespace SalonYonetimUygulamasi.Models
     public class Randevu
     {
 
-		[Required]
-            public int CalısanID { get; set; }
+	
         [Required]
 
         public int RandevuID { get; set; }

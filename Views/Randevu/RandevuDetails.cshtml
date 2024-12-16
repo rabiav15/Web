@@ -1,25 +1,28 @@
 ﻿@model SalonYonetimUygulamasi.Models.Randevu
 
-<h1>Randevu Detayları</h1>
+<h2>Randevu Detayları</h2>
 
-<div class="form-group">
-    <label>Tarih</label>
-    <p>@Model.Tarih.ToString("yyyy-MM-dd HH:mm")</p>
-</div>
+<table class="table">
+    <tr>
+        <th>Randevu ID</th>
+        <td>@Model.RandevuID</td>
+    </tr>
+    <tr>
+        <th>Tarih</th>
+        <td>@Model.Tarih.ToString("yyyy-MM-dd HH:mm")</td>
+    </tr>
+    <tr>
+        <th>Çalışan</th>
+        <td>@Model.Calisan.CalisanAd </td>
+    </tr>
+    <tr>
+        <th>İşlem</th>
+        <td>@Model.Islem.IslemAdi</td>
+    </tr>
+    <tr>
+        <th>Ücret</th>
+        <td>@Model.Islem.IslemUcreti</td>
+    </tr>
+</table>
 
-<div class="form-group">
-    <label>İşlem</label>
-    <p>@Model.Islem</p>
-</div>
-
-<div class="form-group">
-    <label>Ücret</label>
-    <p>@Model.IslemUcreti</p>
-</div>
-
-<div class="form-group">
-    <label>Çalışan</label>
-    <p>@Model.Calisan.CalisanAd</p>
-</div>
-
-<a href="/Randevu/Index" class="btn btn-secondary">Geri</a>
+<a href="@Url.Action("Index", "Randevu")" class="btn btn-secondary">Geri</a>
