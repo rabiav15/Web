@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SalonYonetimUygulamasi.Models;
 namespace SalonYonetimUygulamasi.Controllers
 {
-	
+	[Authorize(Roles = "Admin")]
 	public class IslemController : Controller
 	{
 

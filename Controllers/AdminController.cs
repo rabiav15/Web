@@ -25,12 +25,12 @@ namespace SalonYonetimUygulamasi.Controllers
 		{
 			return View();
 		}
-
+		[AllowAnonymous]
 		[HttpPost("Login")]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Login(AdminLoginView model)
 		{
-			if (ModelState.IsValid)
+			if (!ModelState.IsValid)
 			{
 				var user = await _userManager.FindByEmailAsync(model.Email);
 				if (user == null)
@@ -71,5 +71,19 @@ namespace SalonYonetimUygulamasi.Controllers
 
 			return View(model);
 		}
+
+		[HttpGet("Index")]
+		public IActionResult Index()
+		{
+			return View();
+		}
+
+		[HttpGet("Logout")]
+		public async Task<IActionResult> Logout()
+		{
+			await _signInManager.SignOutAsync(); // Oturumu kapat
+			return RedirectToAction("Login", "Admin"); // Admin giriş sayfasına yönlendir
+		}
+
 	}
 }

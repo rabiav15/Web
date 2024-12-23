@@ -4,9 +4,16 @@
     <div class="form-group">
         <label for="Tarih">Tarih</label>
         <select asp-for="Tarih" class="form-control" required>
-            @foreach (var date in ViewBag.Dates)
+            @if (ViewBag.Dates != null)
             {
-                <option value="@date">@date</option>
+                foreach (var date in ViewBag.Dates)
+                {
+                    <option value="@date">@date</option>
+                }
+            }
+            else
+            {
+                <option value="">Tarih verisi yüklenemedi</option>
             }
         </select>
     </div>
@@ -14,17 +21,27 @@
     <div class="form-group">
         <label for="Saat">Saat</label>
         <select asp-for="Saat" class="form-control" required>
-            @foreach (var hour in ViewBag.Hours)
+            @if (ViewBag.Hours != null)
             {
-                <option value="@hour">@hour</option>
+                foreach (var hour in ViewBag.Hours)
+                {
+                    <option value="@hour">@hour</option>
+                }
+            }
+            else
+            {
+                <option value="">Saat verisi yüklenemedi</option>
             }
         </select>
     </div>
 
     <div class="form-group">
-        <label for="IslemID">İşlem Seçin</label>
-        <select asp-for="IslemID" class="form-control" asp-items="@(new SelectList(ViewBag.Islemler, "IslemID", "IslemAdi"))" required onchange="setPrice()">
-            <option value="">-- İşlem Seçin --</option>
+        <label for="IslemID">İşlem</label>
+        <select name="IslemID" id="IslemID" class="form-control">
+            @foreach (var islem in ViewBag.Islemler)
+            {
+                <option value="@islem.IslemID">@islem.IslemAdi</option>
+            }
         </select>
     </div>
 

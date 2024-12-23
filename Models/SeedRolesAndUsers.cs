@@ -25,17 +25,17 @@ namespace SalonYonetimUygulamasi.Models
 			}
 
 			// Admin kullanıcısını oluştur
-			var adminUser = await userManager.FindByEmailAsync("admin@example.com");
+			var adminUser = await userManager.FindByEmailAsync("b241210352@sakarya.edu.tr");
 			if (adminUser == null)
 			{
 				adminUser = new IdentityUser
 				{
 					UserName = "admin",
-					Email = "admin@example.com",
+					Email = "b241210352@sakarya.edu.tr",
 					EmailConfirmed = true // E-posta doğrulandı olarak işaretle
 				};
 
-				var result = await userManager.CreateAsync(adminUser, "Admin123!");
+				var result = await userManager.CreateAsync(adminUser, "varolRabia-150912");
 				if (result.Succeeded)
 				{
 					// Admin rolünü ata

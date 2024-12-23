@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Admin Paneli";
+}
+
+<h1>Admin Paneli</h1>
+
+<div class="list-group">
+    <a href="@Url.Action("Index", "Islem")" class="list-group-item list-group-item-action">
+        İşlemleri Yönet
+    </a>
+    <a href="@Url.Action("Index", "Calisan")" class="list-group-item list-group-item-action">
+        Çalışanları Yönet
+    </a>
+    <a href="@Url.Action("Index", "Randevu")" class="list-group-item list-group-item-action">
+        Randevuları Yönet
+    </a>
+    <a href="@Url.Action("Index", "Salon")" class="list-group-item list-group-item-action">
+        Salonları Yönet
+    </a>
+</div>
+
+<div style="margin-top: 20px;">
+    <a asp-action="Logout" class="btn btn-danger">Çıkış Yap</a>
+</div>

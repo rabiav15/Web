@@ -36,44 +36,47 @@ namespace SalonYonetimUygulamasi.Controllers
 		{
 			try
 			{
-				// Tarih seçeneklerini oluşturuyoruz
 				var dates = new List<string>();
-				var now = DateTime.Now.Date; // Bugünün tarihi
+				var now = DateTime.Now.Date;
+
+				// Önümüzdeki 7 günün tarihlerini ekle
 				for (int i = 0; i < 7; i++)
 				{
 					dates.Add(now.AddDays(i).ToString("yyyy-MM-dd"));
 				}
 				ViewBag.Dates = dates;
 
-				// Saat seçeneklerini oluşturuyoruz
-				var allHours = new List<string>
+				// Saat seçeneklerini ekle
+				ViewBag.Hours = new List<string>
 		{
 			"09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
 			"12:00", "13:30", "14:00", "14:30", "15:00", "15:30",
 			"16:00", "16:30"
 		};
 
-				// Mevcut randevuların saatlerini alıyoruz
-				var takenHours = _context.Randevular
-					.Select(r => r.Tarih.ToString("HH:mm"))
-					.ToList();
+				// Çalışanları ve işlemleri veritabanından getir
+				var calisanlar = _context.Calisanlar.ToList();
+				var islemler = _context.Islemler.ToList();
 
-				// Alınmamış saatleri belirliyoruz
-				ViewBag.Hours = allHours.Where(hour => !takenHours.Contains(hour)).ToList();
+				if (ViewBag.calisanlar == null || !calisanlar.Any() || ViewBag.islemler == null || !islemler.Any())
+				{
+					throw new Exception("Çalışan veya işlem bilgisi eksik. Lütfen veritabanını kontrol edin.");
+				}
 
-				// Çalışanlar ve işlemleri ViewBag ile gönderiyoruz
-				ViewBag.Calisanlar = _context.Calisanlar.ToList();
-				ViewBag.Islemler = _context.Islemler.ToList();
+				ViewBag.Calisanlar = calisanlar;
+				ViewBag.Islemler = islemler;
 
 				return View();
 			}
 			catch (Exception ex)
 			{
 				Console.WriteLine($"Hata: {ex.Message}");
-				return View("Error"); // Hata sayfasına yönlendir
+				return View("Error"); // Bir hata sayfası döndür
 			}
-		}
+			
 
+			
+		}
 
 
 		[HttpPost]
@@ -82,14 +85,12 @@ namespace SalonYonetimUygulamasi.Controllers
 		{
 			try
 			{
-				// Tarih ve saat birleştirme
 				if (!string.IsNullOrEmpty(TarihDate) && !string.IsNullOrEmpty(TarihTime))
 				{
 					var selectedDate = DateTime.Parse(TarihDate);
 					var selectedTime = TimeSpan.Parse(TarihTime);
 					randevu.Tarih = selectedDate + selectedTime;
 
-					// Aynı çalışandan aynı tarihte ve saatte randevu olup olmadığını kontrol et
 					var mevcutRandevu = _context.Randevular
 						.FirstOrDefault(r => r.CalisanID == randevu.CalisanID && r.Tarih == randevu.Tarih);
 
@@ -103,7 +104,6 @@ namespace SalonYonetimUygulamasi.Controllers
 					ModelState.AddModelError("Tarih", "Tarih ve saat alanları doldurulmalıdır.");
 				}
 
-				// Seçilen işlem ID'sini kullanarak işlem ücretini alıyoruz
 				var selectedIslem = _context.Islemler.FirstOrDefault(i => i.IslemID == randevu.IslemID);
 				if (selectedIslem != null)
 				{
@@ -111,10 +111,9 @@ namespace SalonYonetimUygulamasi.Controllers
 				}
 				else
 				{
-					ModelState.AddModelError("IslemID", "Geçersiz bir işlem seçildi.");
+					ModelState.AddModelError("IslemID", "Geçersiz işlem seçildi.");
 				}
 
-				// Model doğrulama ve kaydetme
 				if (ModelState.IsValid)
 				{
 					_context.Randevular.Add(randevu);
@@ -127,7 +126,6 @@ namespace SalonYonetimUygulamasi.Controllers
 				ModelState.AddModelError("", $"Bir hata oluştu: {ex.Message}");
 			}
 
-			// Sayfa yeniden yüklendiğinde gerekli ViewBag verilerini tekrar yükleyelim
 			ViewBag.Dates = new List<string>();
 			ViewBag.Hours = new List<string>();
 			ViewBag.Calisanlar = _context.Calisanlar.ToList();
@@ -135,6 +133,7 @@ namespace SalonYonetimUygulamasi.Controllers
 
 			return View(randevu);
 		}
+
 
 		public IActionResult RandevuDetails(int id)
 		{
@@ -153,7 +152,7 @@ namespace SalonYonetimUygulamasi.Controllers
 
 
 
-
+		[Authorize(Roles = "Admin")]
 		public IActionResult RandevuDelete(int? id)
 		{
 			if (id == null)

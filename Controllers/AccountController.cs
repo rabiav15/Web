@@ -21,34 +21,49 @@ public class AccountController : Controller
 			return View();
 		}
 
-		// POST: /Account/Login
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Login(LoginView model)
+	// POST: /Account/Login
+	[HttpPost]
+	[ValidateAntiForgeryToken]
+	public async Task<IActionResult> Login(LoginView model)
+	{
+		if (ModelState.IsValid)
 		{
-			if (ModelState.IsValid)
+			var user = await _userManager.FindByEmailAsync(model.Email);
+
+			if (user == null)
 			{
-				var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-
-				if (result.Succeeded)
-				{
-					var user = await _userManager.FindByEmailAsync(model.Email);
-					var roles = await _userManager.GetRolesAsync(user);
-
-					// Üye kontrolü
-					if (roles.Contains("Üye"))
-					{
-						return RedirectToAction("Dashboard", "Uye");
-					}
-				}
-
-				ModelState.AddModelError("", "Geçersiz giriş bilgileri.");
+				ModelState.AddModelError("", "Kullanıcı bulunamadı.");
+				return View(model);
 			}
 
-			return View(model);
+			var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
+
+			if (result.Succeeded)
+			{
+				var roles = await _userManager.GetRolesAsync(user);
+
+				if (roles.Contains("Admin"))
+				{
+					return RedirectToAction("Dashboard", "Admin"); // Admin paneline yönlendir
+				}
+				else if (roles.Contains("Üye"))
+				{
+					return RedirectToAction("Dashboard", "Uye"); // Üye paneline yönlendir
+				}
+				else
+				{
+					ModelState.AddModelError("", "Geçersiz rol.");
+					return View(model);
+				}
+			}
+
+			ModelState.AddModelError("", "Geçersiz giriş bilgileri.");
 		}
 
-		[HttpGet]
+		return View(model);
+	}
+
+	[HttpGet]
 		public IActionResult Register()
 		{
 			return View();

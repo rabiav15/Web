@@ -5,7 +5,7 @@ using SalonYonetimUygulamasi.Models;
 
 namespace SalonYonetimUygulamasi.Controllers
 {
-
+	[Authorize(Roles = "Admin")]
 	public class CalisanController : Controller
 	{
 
