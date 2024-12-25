@@ -1,22 +1,56 @@
-﻿@{
-    ViewData["Title"] = "Admin Paneli";
-}
+﻿
 
-<h1>Admin Paneli</h1>
+<h2>Admin Paneli</h2>
 
-<div class="list-group">
-    <a href="@Url.Action("Index", "Islem")" class="list-group-item list-group-item-action">
-        İşlemleri Yönet
-    </a>
-    <a href="@Url.Action("Index", "Calisan")" class="list-group-item list-group-item-action">
-        Çalışanları Yönet
-    </a>
-    <a href="@Url.Action("Index", "Randevu")" class="list-group-item list-group-item-action">
-        Randevuları Yönet
-    </a>
-    <a href="@Url.Action("Index", "Salon")" class="list-group-item list-group-item-action">
-        Salonları Yönet
-    </a>
+<div class="row">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>İşlemleri Yönet</h4>
+            </div>
+            <div class="card-body">
+                <a href="@Url.Action("Index", "Islem")" class="btn btn-block btn-outline-primary">
+                    Yönet
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>Çalışanları Yönet</h4>
+            </div>
+            <div class="card-body">
+                <a href="@Url.Action("Index", "Calisan")" class="btn btn-block btn-outline-primary">
+                    Yönet
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>Randevuları Yönet</h4>
+            </div>
+            <div class="card-body">
+                <a href="@Url.Action("Index", "Randevu")" class="btn btn-block btn-outline-primary">
+                    Yönet
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>Salonları Yönet</h4>
+            </div>
+            <div class="card-body">
+                <a href="@Url.Action("Index", "Salon")" class="btn btn-block btn-outline-primary">
+                    Yönet
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div style="margin-top: 20px;">

@@ -9,7 +9,8 @@
 		public int CalisanID { get; set; }     // Çalışan ID (Foreign Key)
 
 		// Navigation Property
-		public virtual Calisan Calisan { get; set; } // İlgili Çalışan
+		public virtual Calisan Calisan { get; set; } 
+		// İlgili Çalışan
 	}
 
 }

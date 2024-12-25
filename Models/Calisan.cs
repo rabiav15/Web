@@ -25,6 +25,7 @@ namespace SalonYonetimUygulamasi.Models
         public int SalonID { get; set; }
         public Salon Salon { get; set; }
 
+	
 		public virtual ICollection<Islem> Islemler { get; set; }
 	}
 	}

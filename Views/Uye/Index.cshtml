@@ -1,6 +1,41 @@
-﻿﻿<h1>Üye Paneli</h1>
+﻿@{
+    ViewData["Title"] = "Üye Paneli";
+}
+
+<h1>Üye Paneli</h1>
 <p>Hoş geldiniz, @User.Identity.Name!</p>
 
-<a href="/Uye/Profil" class="btn btn-primary">Profilim</a>
-<a href="/Uye/Randevularim" class="btn btn-secondary">Randevularım</a>
-<a href="/Randevu/RandevuCreate" class="btn btn-secondary">Randevu Al</a>
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h4>Profilim</h4>
+            </div>
+            <div class="card-body">
+                <a href="/Uye/Profil" class="btn btn-block btn-outline-info">Profilimi Gör</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h4>Randevularım</h4>
+            </div>
+            <div class="card-body">
+                <a href="/Uye/Randevularim" class="btn btn-block btn-outline-info">Randevularımı Gör</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h4>Randevu Al</h4>
+            </div>
+            <div class="card-body">
+                <a href="/Randevu/RandevuCreate" class="btn btn-block btn-outline-info">Yeni Randevu Al</a>
+            </div>
+        </div>
+    </div>
+</div>

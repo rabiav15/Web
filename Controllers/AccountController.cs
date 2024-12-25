@@ -44,11 +44,11 @@ public class AccountController : Controller
 
 				if (roles.Contains("Admin"))
 				{
-					return RedirectToAction("Dashboard", "Admin"); // Admin paneline yönlendir
+					return RedirectToAction("Index", "Admin"); // Admin paneline yönlendir
 				}
 				else if (roles.Contains("Üye"))
 				{
-					return RedirectToAction("Dashboard", "Uye"); // Üye paneline yönlendir
+					return RedirectToAction("Index", "Uye"); // Üye paneline yönlendir
 				}
 				else
 				{
