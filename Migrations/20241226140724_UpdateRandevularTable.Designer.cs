@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SalonYonetimUygulamasi.Models;
 
@@ -11,9 +12,11 @@ using SalonYonetimUygulamasi.Models;
 namespace SalonYonetimUygulamasi.Migrations
 {
     [DbContext(typeof(SalonContext))]
-    partial class SalonContextModelSnapshot : ModelSnapshot
+    [Migration("20241226140724_UpdateRandevularTable")]
+    partial class UpdateRandevularTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -316,9 +319,6 @@ namespace SalonYonetimUygulamasi.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("RandevuID");
 
                     b.HasIndex("CalisanID");
@@ -328,8 +328,6 @@ namespace SalonYonetimUygulamasi.Migrations
                     b.HasIndex("SalonId");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("Randevular");
                 });
@@ -366,10 +364,6 @@ namespace SalonYonetimUygulamasi.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId");
 
@@ -475,10 +469,6 @@ namespace SalonYonetimUygulamasi.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1");
-
                     b.Navigation("Calisan");
 
                     b.Navigation("Islem");
@@ -486,8 +476,6 @@ namespace SalonYonetimUygulamasi.Migrations
                     b.Navigation("Kullanici");
 
                     b.Navigation("Salon");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SalonYonetimUygulamasi.Models.Calisan", b =>

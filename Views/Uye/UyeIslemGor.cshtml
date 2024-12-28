@@ -1,0 +1,40 @@
+﻿@model List<Islem>
+
+<h1>Sunulan Hizmetler</h1>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>İşlem Listesi</h4>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>İşlem Adı</th>
+                            <th>Ücret</th>
+                            <th>Süre</th>
+                            <th>Çalışan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var islem in Model)
+                        {
+                            <tr>
+                                <td>@islem.IslemAdi</td>
+                                <td>@islem.IslemUcreti ₺</td>
+                                <td>@islem.IslemSuresi dakika</td>
+                                <td>@islem.Calisan?.CalisanAd</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="margin-top: 20px;">
+    <a href="@Url.Action("Index", "Uye")" class="btn btn-primary"> Panele Geri Dön</a>
+</div>

@@ -1,52 +1,74 @@
 ﻿@model SalonYonetimUygulamasi.Models.Randevu
 
-<form asp-action="RandevuCreate" method="post">
-    <!-- Tarih Seçimi -->
-   
-        <div class="form-group">
-            <label for="TarihDate">Tarih</label>
-            <select id="TarihDate" name="TarihDate" class="form-control">
-                @foreach (var date in ViewBag.Dates)
-                {
-                    <option value="@date">@date</option>
-                }
-            </select>
-        </div>
 
-        <div class="form-group">
-            <label for="TarihTime">Saat</label>
-            <select id="TarihTime" name="TarihTime" class="form-control">
-                @foreach (var hour in ViewBag.Hours)
-                {
-                    <option value="@hour">@hour</option>
-                }
-            </select>
-        </div>
 
-    <!-- İşlem Seçimi -->
+@{
+    ViewData["Title"] = "Randevu Oluştur";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form method="post">
+    
     <div class="form-group">
-        <label for="IslemID">İşlem</label>
-        <select asp-for="IslemID" class="form-control" asp-items="@(new SelectList(ViewBag.Islemler, "IslemID", "IslemAdi"))" required onchange="setPrice()">
-            <option value="">-- İşlem Seçin --</option>
+        <label for="TarihDate">Randevu Tarihi</label>
+        <select class="form-control" id="TarihDate" name="TarihDate" required>
+            <option value="">-- Tarih Seçin --</option>
+            @foreach (var date in ViewBag.Dates)
+            {
+                <option value="@date">@date</option>
+            }
         </select>
     </div>
 
-    <!-- İşlem Ücreti -->
     <div class="form-group">
-        <label for="IslemUcreti">Ücret</label>
-        <input type="text" class="form-control" id="IslemUcreti" name="IslemUcreti" value="@Model.IslemUcreti" readonly />
+        <label for="TarihTime">Randevu Saati</label>
+        <select class="form-control" id="TarihTime" name="TarihTime" required>
+            <option value="">-- Saat Seçin --</option>
+            @foreach (var hour in ViewBag.Hours)
+            {
+                <option value="@hour">@hour</option>
+            }
+        </select>
     </div>
 
-    <!-- Çalışan Seçimi -->
     <div class="form-group">
-        <label for="CalisanID">Çalışan</label>
-        <select asp-for="CalisanID" class="form-control" asp-items="@(new SelectList(ViewBag.Calisanlar, "CalisanID", "CalisanAd"))" required>
+        <label for="CalisanId">Çalışan Seçin</label>
+        <select class="form-control" id="CalisanId" name="CalisanId" required>
             <option value="">-- Çalışan Seçin --</option>
+            @foreach (var calisan in ViewBag.Calisanlar)
+            {
+                <option value="@calisan.CalisanID">@calisan.CalisanAd @calisan.CalisanSoyad</option>
+            }
         </select>
     </div>
 
-    <button type="submit" class="btn btn-primary">Randevu Al</button>
+    <div class="form-group">
+        <label for="IslemId">İşlem Seçin</label>
+        <select class="form-control" id="IslemId" name="IslemId" required>
+            <option value="">-- İşlem Seçin --</option>
+            @foreach (var islem in ViewBag.Islemler)
+            {
+                <option value="@islem.IslemID">@islem.IslemAdi</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="SalonId">Salon Seçin</label>
+        <select class="form-control" id="SalonId" name="SalonId" required>
+            <option value="">-- Salon Seçin --</option>
+            @foreach (var salon in ViewBag.Salonlar)
+            {
+                <option value="@salon.SalonID">@salon.SalonAd</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Randevu Oluştur</button>
 </form>
+
+
 
 <script>
     function setPrice() {

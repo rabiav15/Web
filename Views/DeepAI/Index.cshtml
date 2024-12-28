@@ -1,0 +1,14 @@
+﻿@{
+    var aiResponse = ViewBag.AiResponse as string;
+}
+
+<h3>Saç Rengi Önerileri</h3>
+@if (!string.IsNullOrEmpty(aiResponse))
+{
+    <p>@aiResponse</p>
+}
+else
+{
+    <p>Saç rengi önerileri alınamadı.</p>
+}
+

@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace SalonYonetimUygulamasi.Models
 {
@@ -22,10 +23,13 @@ namespace SalonYonetimUygulamasi.Models
         public string UzmanlikAlani { get; set; }
 
 
-        public int SalonID { get; set; }
-        public Salon Salon { get; set; }
+       
 
-	
+		public Salon Salon { get; set; }
+
+
+
+		[JsonIgnore]
 		public virtual ICollection<Islem> Islemler { get; set; }
 	}
 	}

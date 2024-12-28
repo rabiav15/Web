@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using OpenAI;
 using SalonYonetimUygulamasi.Models;
 
 namespace SalonYonetimUygulamasi.Controllers
@@ -10,10 +11,11 @@ namespace SalonYonetimUygulamasi.Controllers
 	public class UyeController : Controller
 	{
 		private readonly UserManager<IdentityUser> _userManager;
+		private readonly SalonContext _context;
 
-
-		public UyeController(UserManager<IdentityUser> userManager)
+		public UyeController(UserManager<IdentityUser> userManager , SalonContext context)
 		{
+			_context = context;
 			_userManager = userManager;
 		}
 
@@ -50,7 +52,14 @@ namespace SalonYonetimUygulamasi.Controllers
 			return View(randevular); // Randevularim.cshtml view'ine randevuları gönder
 		} 
 		
-
+		public IActionResult UyeIslemGor()
+		{
+			var islemler = _context.Islemler
+	.Include(i => i.Calisan)
+	.ToList();
+			return View(islemler);
+			
+		}
 
 	}
 }

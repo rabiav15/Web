@@ -1,0 +1,26 @@
+﻿<form id="uploadForm" enctype="multipart/form-data">
+    <label for="file">Fotoğraf Yükleyin:</label>
+    <input type="file" name="file" id="file" required />
+    <button type="button" id="uploadButton">Yükle</button>
+</form>
+
+<h3>Saç Rengi Önerileri</h3>
+<div id="suggestions">
+    <p>Henüz bir öneri alınmadı.</p>
+</div>
+
+<script>
+    document.getElementById('uploadButton').addEventListener('click', function () {
+        var formData = new FormData(document.getElementById('uploadForm'));
+
+        fetch('/api/DeepAI/UploadPhoto', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('suggestions').innerHTML = `<p>${data.response}</p>`;
+        })
+        .catch(error => console.error('Hata:', error));
+    });
+</script>
